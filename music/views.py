@@ -1,5 +1,6 @@
 from django.http.response import Http404
 from django.shortcuts import render
+from rest_framework.serializers import Serializer
 from .models import Song
 from .serializers import SongSerializer
 from rest_framework.views import APIView
@@ -36,7 +37,7 @@ class SongDetail(APIView):
 
     def put(self, request, pk):
         song = self.get_object(pk)
-        serializer = SongSerializer(song)
+        serializer = SongSerializer(song, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -44,6 +45,7 @@ class SongDetail(APIView):
 
     def delete(self, request, pk):
         song = self.get_object(pk)
+        serializer = SongSerializer(song)
         song.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.data,status=status.HTTP_204_NO_CONTENT)
 
