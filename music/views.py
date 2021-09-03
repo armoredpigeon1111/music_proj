@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # Create your views here.
+
 class SongList(APIView):
 
     def get(self, request):
@@ -54,6 +55,6 @@ class SongDetail(APIView):
             serializer = SongSerializer(song)
             song.delete()
             return Response(serializer.data,status=status.HTTP_204_NO_CONTENT)
-        except Song.DoesNotExist:
+        except:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
